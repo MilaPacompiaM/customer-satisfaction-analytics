@@ -166,7 +166,7 @@ amplifytools.xcconfig
 terraform.tfplan
 
 # Data files
-*.csv
+# *.csv
 *.parquet
 *.json
 *.xlsx

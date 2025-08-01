@@ -1,0 +1,101 @@
+EncuestaID,Fecha,ClienteID,SucursalID,Puntuacion,Comentario,AsesorID,Canal,TiempoRespuesta,Estado
+ENC000001,2024-12-15 14:23:45,CLI847392,LIM001,9,"Excelente atención, muy rápidos 😊",ASE1247,Web,8,Activo
+ENC000002,2024-11-28 09:15:32,CLI293847,AQP001,3,"Demasiado lento el sistema, perdí tiempo 😤",ASE1098,Call Center,35,Pendiente
+ENC000003,2024-12-03 16:47:21,CLI573829,TRU001,8,"Muy buena experiencia, recomendado 👍",ASE1456,WhatsApp,12,Cerrado
+ENC000004,2024-10-22 11:33:17,CLI928374,CHI001,6,"Regular, esperaba más rapidez en la respuesta",ASE1789,Email,67,Activo
+ENC000005,2024-12-08 13:25:49,CLI456791,LIM002,10,"¡Perfecto! No tengo quejas, súper profesionales ⭐",ASE1123,Móvil,4,Activo
+ENC000006,2024-11-15 10:41:03,CLI728463,PIU001,2,"Malísimo servicio, no vuelvo más 😠",ASE1567,Tienda,52,Pendiente
+ENC000007,2024-12-12 15:52:36,CLI184729,SJL001,7,"Bien en general, algunos problemas menores 🤔",ASE1334,Web,15,Cerrado
+ENC000008,2024-10-18 08:17:24,CLI639281,HUE001,5,"Ni bueno ni malo, cumple con lo básico",ASE1891,SMS,3,Activo
+ENC000009,2024-11-23 12:08:51,CLI374826,CUS001,9,"Increíble servicio, los felicito muchísimo 🎉",ASE1445,Call Center,18,Activo
+ENC000010,2024-12-01 17:34:12,CLI925863,TAR001,1,"Pésima atención, nunca resuelven nada ❌",ASE1672,Web,45,Pendiente
+ENC000011,2024-10-31 14:19:47,CLI518367,CALL001,8,"Muy satisfecho con la solución rápida 💯",ASE1289,WhatsApp,9,Cerrado
+ENC000012,2024-11-07 09:42:18,CLI847295,MIR001,4,"Lento y confuso, pueden mejorar mucho 👎",ASE1756,Email,89,Activo
+ENC000013,2024-12-16 16:15:33,CLI263749,VES001,6,"Aceptable pero nada extraordinario 😐",ASE1423,Móvil,22,Pendiente
+ENC000014,2024-11-12 11:28:56,CLI729384,ATE001,10,"¡Excelente! Mejor que cualquier otra empresa 🌟",ASE1198,Tienda,12,Activo
+ENC000015,2024-10-25 13:47:29,CLI485762,SJM001,3,"Frustrante, mucho tiempo esperando respuesta 🐌",ASE1567,SMS,2,Cerrado
+ENC000016,2024-12-04 10:33:41,CLI638291,PUC001,7,"Bueno, aunque podría ser más amable el personal",ASE1834,Call Center,28,Activo
+ENC000017,2024-11-19 15:21:07,CLI174635,UCY001,9,"Fantástico, seguiré siendo cliente fiel 😍",ASE1456,Web,6,Activo
+ENC000018,2024-10-14 12:56:23,CLI927463,IQU001,2,"No recomiendo, servicio deficiente 📉",ASE1723,WhatsApp,41,Pendiente
+ENC000019,2024-12-09 08:44:15,CLI385274,TCN001,8,"Muy profesionales, resolvieron todo perfecto ✨",ASE1345,Email,34,Cerrado
+ENC000020,2024-11-02 17:18:52,CLI639285,LIM003,5,"Promedio, nada destacable ni malo 🤷‍♂️",ASE1567,Móvil,19,Activo
+ENC000021,2024-12-13 14:07:38,CLI728491,AQP001,6,"Decente servicio, puede mejorar la rapidez ⏰",ASE1789,Tienda,38,Pendiente
+ENC000022,2024-10-27 09:52:14,CLI463827,TRU001,9,"Genial experiencia, muy recomendable 🔝",ASE1234,SMS,1,Activo
+ENC000023,2024-11-25 16:29:46,CLI849273,CHI001,1,"Horrible, cambiaré de compañía inmediatamente 💔",ASE1678,Call Center,67,Cerrado
+ENC000024,2024-12-06 11:13:22,CLI572849,PIU001,7,"Bien, aunque esperaba un poco más de eficiencia",ASE1445,Web,13,Activo
+ENC000025,2024-10-20 13:45:17,CLI293846,HUE001,10,"Perfecto en todo sentido, gracias equipo! 🙌",ASE1556,WhatsApp,7,Activo
+ENC000026,2024-11-14 15:31:09,CLI738495,CUS001,4,"Muy malo, demasiadas complicaciones innecesarias 😞",ASE1823,Email,78,Pendiente
+ENC000027,2024-12-11 09:18:43,CLI485739,TAR001,8,"Excelente atención, muy satisfecho con todo 👌",ASE1367,Móvil,11,Cerrado
+ENC000028,2024-10-16 12:24:31,CLI639284,CALL001,3,"Regular tirando a malo, falta mejorar 📱",ASE1789,Tienda,44,Activo
+ENC000029,2024-11-21 14:56:18,CLI847392,MIR001,6,"Ok, cumple pero sin sorpresas positivas",ASE1445,SMS,4,Pendiente
+ENC000030,2024-12-02 16:42:05,CLI294857,VES001,9,"Increíble servicio, los recomiendo siempre 💖",ASE1623,Call Center,21,Activo
+ENC000031,2024-10-29 10:37:42,CLI573849,ATE001,2,"Malísimo, perdí tiempo y paciencia 🤬",ASE1734,Web,38,Cerrado
+ENC000032,2024-11-17 13:14:26,CLI829475,SJM001,7,"Buena atención en general, algunos detalles menores",ASE1456,WhatsApp,16,Activo
+ENC000033,2024-12-14 11:49:13,CLI463827,PUC001,5,"Normal, sin quejas pero tampoco elogios 😐",ASE1578,Email,55,Pendiente
+ENC000034,2024-10-13 15:23:47,CLI738294,UCY001,8,"Muy bueno, profesional y eficiente ⚡",ASE1689,Móvil,9,Activo
+ENC000035,2024-11-26 09:08:34,CLI582947,IQU001,1,"Pésimo, no funciona nada bien 🚫",ASE1734,Tienda,59,Cerrado
+ENC000036,2024-12-07 17:55:21,CLI394875,TCN001,6,"Aceptable, puede ser mejor la comunicación",ASE1445,SMS,2,Activo
+ENC000037,2024-10-24 12:31:08,CLI729384,LIM001,9,"Fantástico, superó mis expectativas completamente 🎯",ASE1567,Call Center,16,Pendiente
+ENC000038,2024-11-13 14:17:55,CLI847392,LIM002,4,"Lento y confuso el proceso, frustrante 😤",ASE1823,Web,29,Activo
+ENC000039,2024-12-10 10:46:32,CLI573829,AQP001,7,"Bien, aunque podría ser más rápido todo",ASE1389,WhatsApp,18,Cerrado
+ENC000040,2024-10-19 16:22:19,CLI829475,TRU001,10,"¡Excelente! Mejor servicio que he recibido 🌟",ASE1456,Email,25,Activo
+ENC000041,2024-11-28 11:53:46,CLI463827,CHI001,3,"Malo, no resuelven los problemas reales 👎",ASE1678,Móvil,33,Pendiente
+ENC000042,2024-12-05 13:29:13,CLI738294,PIU001,8,"Muy satisfecho, personal muy capacitado 💪",ASE1734,Tienda,15,Activo
+ENC000043,2024-10-21 09:11:27,CLI582947,HUE001,5,"Regular, cumple lo mínimo necesario",ASE1445,SMS,3,Cerrado
+ENC000044,2024-11-16 15:48:04,CLI394875,CUS001,6,"Decente, aunque esperaba mejor calidad",ASE1567,Call Center,31,Activo
+ENC000045,2024-12-12 12:35:51,CLI729384,TAR001,9,"Genial experiencia, muy recomendable siempre 🏆",ASE1623,Web,7,Pendiente
+ENC000046,2024-10-15 14:02:38,CLI847392,CALL001,2,"Muy malo, sistema lento y confuso 📵",ASE1789,WhatsApp,47,Cerrado
+ENC000047,2024-11-22 16:19:25,CLI573829,MIR001,7,"Bueno en general, pequeños inconvenientes 🤔",ASE1456,Email,42,Activo
+ENC000048,2024-12-03 10:57:12,CLI829475,VES001,4,"Deficiente, muchos errores en el servicio 😠",ASE1734,Móvil,26,Pendiente
+ENC000049,2024-10-28 13:44:59,CLI463827,ATE001,8,"Excelente atención, muy profesionales todos ✨",ASE1578,Tienda,19,Activo
+ENC000050,2024-11-18 11:26:46,CLI738294,SJM001,1,"Horrible servicio, no lo recomiendo nunca ❌",ASE1689,SMS,1,Cerrado
+ENC000051,2024-12-15 15:13:33,CLI582947,PUC001,6,"Ok, nada especial pero funciona bien",ASE1445,Call Center,24,Activo
+ENC000052,2024-10-12 17:40:20,CLI394875,UCY001,9,"Increíble servicio, seguiré siendo cliente 😊",ASE1567,Web,5,Pendiente
+ENC000053,2024-11-24 09:55:07,CLI729384,IQU001,3,"Malo, demasiadas complicaciones innecesarias 🐌",ASE1823,WhatsApp,39,Activo
+ENC000054,2024-12-08 14:31:54,CLI847392,TCN001,7,"Bien, aunque puede mejorar la comunicación",ASE1456,Email,51,Cerrado
+ENC000055,2024-10-26 12:18,CLI573829,LIM003,10,"Perfecto, no tengo ninguna queja 🎉",ASE1678,Móvil,6,Activo
+ENC000056,2024-11-11 16:04:28,CLI829475,LIM001,2,"Pésimo, no resuelven nada bien 😤",ASE1734,Tienda,48,Pendiente
+ENC000057,2024-12-13 08:51:15,CLI463827,LIM002,8,"Muy bueno, eficiente y amable personal 👍",ASE1589,SMS,2,Activo
+ENC000058,2024-10-17 11:37:02,CLI738294,AQP001,5,"Promedio, sin destacar nada especial",ASE1445,Call Center,27,Cerrado
+ENC000059,2024-11-29 14:23:49,CLI582947,TRU001,6,"Aceptable, puede ser mejor la rapidez ⏰",ASE1567,Web,17,Activo
+ENC000060,2024-12-04 16:59:36,CLI394875,CHI001,9,"Fantástico, superaron todas mis expectativas 🌟",ASE1823,WhatsApp,11,Pendiente
+ENC000061,2024-10-23 13:46,CLI729384,PIU001,1,"Horrible experiencia, cambiaré de empresa 💔",ASE1456,Email,73,Cerrado
+ENC000062,2024-11-15 10:12:27,CLI847392,HUE001,7,"Bueno, aunque esperaba un poco más",ASE1678,Móvil,21,Activo
+ENC000063,2024-12-09 15:38:14,CLI573829,CUS001,4,"Malo, muchos errores y demoras 👎",ASE1734,Tienda,41,Pendiente
+ENC000064,2024-10-30 12:25:01,CLI829475,TAR001,8,"Excelente servicio, muy satisfecho siempre 💯",ASE1589,SMS,3,Activo
+ENC000065,2024-11-20 09:01:48,CLI463827,CALL001,3,"Regular tirando a malo, falta mejorar mucho",ASE1445,Call Center,44,Cerrado
+ENC000066,2024-12-14 17:17,CLI738294,MIR001,6,"Ok, cumple lo básico sin sorpresas",ASE1567,Web,14,Activo
+ENC000067,2024-10-14 14:54:22,CLI582947,VES001,10,"¡Perfecto! Mejor servicio imposible 🏆",ASE1823,WhatsApp,8,Pendiente
+ENC000068,2024-11-27 11:31:09,CLI394875,ATE001,2,"Muy malo, no recomiendo para nada 📉",ASE1456,Email,64,Activo
+ENC000069,2024-12-06 13:07:56,CLI729384,SJM001,7,"Bien en general, algunos detalles menores",ASE1678,Móvil,18,Cerrado
+ENC000070,2024-10-18 16:44,CLI847392,PUC001,5,"Normal, sin quejas graves ni elogios",ASE1734,Tienda,32,Activo
+ENC000071,2024-11-23 08:20:27,CLI573829,UCY001,8,"Muy buena experiencia, recomendable 👌",ASE1589,SMS,1,Pendiente
+ENC000072,2024-12-11 15,CLI829475,IQU001,1,"Pésimo servicio, perdí tiempo y dinero 🤬",ASE1445,Call Center,58,Cerrado
+ENC000073,2024-10-25 12:36:41,CLI463827,TCN001,6,"Aceptable pero puede mejorar la atención",ASE1567,Web,19,Activo
+ENC000074,2024-11-17 14:13:28,CLI738294,LIM003,9,"Increíble servicio, los felicito mucho 🎯",ASE1823,WhatsApp,9,Pendiente
+ENC000075,2024-12-02 10:49:15,CLI582947,LIM001,4,"Deficiente, muchas fallas en el sistema 😞",ASE1456,Email,67,Activo
+ENC000076,2024-10-21 17:26:02,CLI394875,LIM002,7,"Bueno, aunque podría ser más eficiente",ASE1678,Móvil,23,Cerrado
+ENC000077,2024-11-14 09:02:49,CLI729384,AQP001,3,"Malo, no resuelven problemas reales 👎",ASE1734,Tienda,46,Activo
+ENC000078,2024-12-07 16:38:36,CLI847392,TRU001,8,"Excelente atención, muy profesionales ⚡",ASE1589,SMS,2,Pendiente
+ENC000079,2024-10-27 11:15:23,CLI573829,CHI001,2,"Horrible, no funciona nada correctamente 🚫",ASE1445,Call Center,52,Cerrado
+ENC000080,2024-11-19 13:51:10,CLI829475,PIU001,6,"Regular, cumple pero sin destacar nada",ASE1567,Web,16,Activo
+ENC000081,2024-12-12 15:27:57,CLI463827,HUE001,9,"Fantástico, mejor que otras empresas 🌟",ASE1823,WhatsApp,12,Pendiente
+ENC000082,2024-10-16 08:04:44,CLI738294,CUS001,5,"Promedio, ni muy bueno ni muy malo 😐",ASE1456,Email,49,Activo
+ENC000083,2024-11-25 16,CLI582947,TAR001,7,"Bien, aunque esperaba mayor rapidez",ASE1678,Móvil,20,Cerrado
+ENC000084,2024-12-05 12:17:18,CLI394875,CALL001,1,"Pésimo, no recomiendo nunca esta empresa ❌",ASE1734,Tienda,61,Activo
+ENC000085,2024-10-29 14:53:05,CLI729384,MIR001,8,"Muy satisfecho con el servicio recibido 💪",ASE1589,SMS,3,Pendiente
+ENC000086,2024-11-12 10:29:52,CLI847392,VES001,4,"Malo, demasiados errores y confusiones 😤",ASE1445,Call Center,37,Cerrado
+ENC000087,2024-12-10 17:06:39,CLI573829,ATE001,6,"Ok, cumple lo mínimo sin más",ASE1567,Web,15,Activo
+ENC000088,2024-10-22 13:43:26,CLI829475,SJM001,10,"¡Excelente! Superaron todas mis expectativas 🎉",ASE1823,WhatsApp,6,Pendiente
+ENC000089,2024-11-26 11:20:13,CLI463827,PUC001,3,"Regular tirando a malo, puede mejorar 📱",ASE1456,Email,71,Activo
+ENC000090,2024-12-03 09:56,CLI738294,UCY001,7,"Bueno en general, pequeños inconvenientes",ASE1678,Móvil,22,Cerrado
+ENC000091,2024-10-24 15:33:47,CLI582947,IQU001,2,"Muy malo, no resuelven nada bien 👎",ASE1734,Tienda,54,Activo
+ENC000092,2024-11-18 12:10:34,CLI394875,TCN001,8,"Excelente servicio, muy recomendable ✨",ASE1589,SMS,1,Pendiente
+ENC000093,2024-12-13 16:47:21,CLI729384,LIM003,5,"Normal, sin quejas pero tampoco elogios",ASE1445,Call Center,29,Cerrado
+ENC000094,2024-10-15 09:24:08,CLI847392,LIM001,6,"Aceptable, puede mejorar la comunicación",ASE1567,Web,18,Activo
+ENC000095,2024-11-21 14:00:55,CLI573829,LIM002,9,"Increíble experiencia, seguiré siendo cliente 😍",ASE1823,WhatsApp,10,Pendiente
+ENC000096,2024-12-08 11:37:42,CLI829475,AQP001,1,"Horrible servicio, cambiaré inmediatamente 💔",ASE1456,Email,76,Activo
+ENC000097,2024-10-28 16:14:29,CLI463827,TRU001,7,"Bien, aunque podría ser más eficiente",ASE1678,Móvil,24,Cerrado
+ENC000098,2024-11-15 08,CLI738294,CHI001,4,"Deficiente, muchas fallas y errores 😞",ASE1734,Tienda,43,Activo
+ENC000099,2024-12-04 15,CLI582947,PIU001,8,"Muy buena atención, profesionales siempre 👍",ASE1589,SMS,2,Pendiente
+ENC000100,2024-10-20 12:27,CLI394875,HUE001,3,"Malo, demasiado tiempo de espera 🐌",ASE1445,Call Center,48,Cerrado
