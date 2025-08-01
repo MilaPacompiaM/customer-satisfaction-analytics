@@ -1,209 +1,424 @@
-# 🚀 CUSTOMER SATISFACTION ANALYTICS - CONFIGURACIÓN COSTO $0.00
+# 🚀 **Guía Completa de Deployment**
 
-## ✅ **CAMBIOS APLICADOS PARA COSTO CERO**
-
-### **🛡️ Protecciones de Costo Agregadas:**
-
-1. **AWS Budget Alert** - Notificación automática si supera $1
-2. **CloudWatch Alarms** - Monitoreo S3 y Athena cerca de límites free tier
-3. **Athena Query Limits** - 1GB máximo por consulta
-4. **Variables de Servicios Externos** - Configuración para alternativas gratuitas
-
-### **🔄 Servicios Externos Configurados:**
-
-| **Servicio AWS** | **Alternativa Gratuita** | **Ahorro Mensual** |
-|------------------|---------------------------|-------------------|
-| QuickSight | Streamlit Dashboard | $9.00 |
-| NAT Gateway | Sin VPC/Conexión directa | $32.40 |
-| CloudTrail completo | CloudWatch Events básico | $2.00 |
-| **TOTAL AHORRADO** | | **$43.40/mes** |
+> **Paso a paso para hacer funcionar el proyecto completo con costo $0.00**
 
 ---
 
-## 🚀 **GUÍA DE DEPLOYMENT RÁPIDO**
+## 📋 **Prerequisitos**
 
-### **1. Setup Inicial (Una sola vez)**
-
+### **�️ Software Requerido**
 ```bash
-# Clonar y configurar
-git clone https://github.com/tu-usuario/customer-satisfaction-analytics.git
+# Verificar que tienes instalado:
+python --version     # Python 3.9+
+aws --version        # AWS CLI 2.0+
+terraform --version  # Terraform 1.0+
+docker --version     # Docker 20.0+ (opcional)
+git --version        # Git 2.0+
+```
+
+### **� Cuentas Necesarias**
+- ✅ **AWS Account** (Free Tier activo)
+- ✅ **GitHub Account** (para Actions)
+- ✅ **Streamlit Account** (gratis)
+- ✅ **Google Account** (para Colab)
+- ✅ **Slack Workspace** (opcional, para alertas)
+
+---
+
+## 🎯 **PASO 1: Setup Inicial**
+
+### **1.1 Clonar el Repositorio**
+```bash
+git clone https://github.com/MilaPacompiaM/customer-satisfaction-analytics.git
 cd customer-satisfaction-analytics
-
-# Ejecutar setup automático
-python scripts/setup_external_services.py
 ```
 
-### **2. Configurar AWS Credentials**
-
+### **1.2 Configurar Python Environment**
 ```bash
-# Opción A: AWS CLI
-aws configure
-# AWS Access Key ID: tu_access_key
-# AWS Secret Access Key: tu_secret_key
-# Default region: us-east-1
+# Crear entorno virtual
+python -m venv venv
 
-# Opción B: Variables de entorno
-export AWS_ACCESS_KEY_ID=tu_access_key
-export AWS_SECRET_ACCESS_KEY=tu_secret_key
-export AWS_DEFAULT_REGION=us-east-1
+# Activar entorno (Windows)
+venv\Scripts\activate
+
+# Activar entorno (Linux/Mac)
+source venv/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
 ```
 
-### **3. Copiar archivo de configuración**
+### **1.3 Configurar AWS CLI**
+```bash
+aws configure
 
+# Información requerida:
+# AWS Access Key ID: [Tu Access Key]
+# AWS Secret Access Key: [Tu Secret Key]  
+# Default region name: us-east-1
+# Default output format: json
+```
+
+**⚠️ IMPORTANTE**: Usa un usuario IAM con permisos limitados, no el root account.
+
+---
+
+## 🔧 **PASO 2: Configurar Variables**
+
+### **2.1 Copiar Archivo de Configuración**
 ```bash
 cd infra/terraform/
 cp terraform.tfvars.example terraform.tfvars
-
-# Editar terraform.tfvars con tu email para alertas
-# notification_email = "tu-email@ejemplo.com"
 ```
 
-### **4. Desplegar Infraestructura AWS (FREE TIER)**
+### **2.2 Editar terraform.tfvars**
+```hcl
+# ============================================================================
+# CONFIGURACIÓN PRINCIPAL - PERSONALIZAR AQUÍ
+# ============================================================================
 
-```bash
-# Inicializar Terraform
-terraform init
+# 🏢 INFORMACIÓN DEL PROYECTO
+project_name = "customer-satisfaction-analytics"
+environment  = "dev"  # o "prod"
+owner_email  = "TU-EMAIL@ejemplo.com"  # ⚠️ CAMBIAR AQUÍ
 
-# Verificar plan (debe mostrar $0.00 en costos)
-terraform plan
+# 🌍 CONFIGURACIÓN AWS
+aws_region = "us-east-1"  # Región más barata para Free Tier
 
-# Aplicar (crear recursos AWS gratuitos)
-terraform apply
+# 💰 PROTECCIÓN DE COSTOS
+budget_amount = 1.00  # Alerta si supera $1.00
+alert_email   = "TU-EMAIL@ejemplo.com"  # ⚠️ CAMBIAR AQUÍ
+
+# 📊 CONFIGURACIÓN SERVICIOS EXTERNOS
+external_dashboard_provider = "streamlit"
+external_data_processor    = "github_actions"
+external_ml_platform       = "google_colab"
+external_notification_channel = "slack"
+
+# 💬 NOTIFICACIONES (Opcional)
+slack_webhook_url = "https://hooks.slack.com/services/TU/WEBHOOK/URL"  # Opcional
+discord_webhook_url = ""  # Opcional
+telegram_bot_token = ""   # Opcional
+
+# 🏷️ TAGS
+tags = {
+  Project     = "CustomerSatisfactionAnalytics"
+  Environment = "dev"
+  Owner       = "DataTeam"
+  Cost        = "Zero"
+}
 ```
 
-### **5. Obtener Configuración para Servicios Externos**
+### **2.3 Configurar Secrets (GitHub Actions)**
+En tu repositorio GitHub:
+1. **Settings** → **Secrets and variables** → **Actions**
+2. **Añadir secrets**:
 
-```bash
-# Obtener configuración generada
-terraform output external_integration_config
-
-# Copiar valores a archivo .env
-terraform output aws_credentials_template
+```
+AWS_ACCESS_KEY_ID: [Tu Access Key ID]
+AWS_SECRET_ACCESS_KEY: [Tu Secret Access Key]
+AWS_REGION: us-east-1
+STREAMLIT_SECRETS: [Token de Streamlit]
+SLACK_WEBHOOK: [URL webhook Slack - opcional]
 ```
 
-### **6. Iniciar Dashboard Local (GRATIS)**
+---
 
-```bash
-# Opción A: Python local
-cd ../../analytics/streamlit_dashboard/
-pip install -r requirements.txt
-streamlit run app.py
+## ☁️ **PASO 3: Deploy AWS Infrastructure**
 
-# Opción B: Docker
-cd ../../docker/
-docker-compose up streamlit-dashboard
-```
-
-### **7. ⚠️ IMPORTANTE: Destruir Recursos Cuando No Uses**
-
+### **3.1 Inicializar Terraform**
 ```bash
 cd infra/terraform/
+terraform init
+```
+
+### **3.2 Planificar Deploy**
+```bash
+terraform plan
+
+# Verificar que muestra:
+# - 15-20 recursos a crear
+# - 0 recursos a modificar/destruir
+# - Estimación de costo: $0.00
+```
+
+### **3.3 Aplicar Configuración**
+```bash
+terraform apply
+
+# Escribir: yes
+# Tiempo estimado: 5-10 minutos
+```
+
+### **3.4 Verificar Recursos Creados**
+```bash
+# S3 Buckets
+aws s3 ls | grep customer-satisfaction
+
+# Glue Database
+aws glue get-databases
+
+# Athena Workgroup
+aws athena list-work-groups
+
+# Budget
+aws budgets describe-budgets --account-id $(aws sts get-caller-identity --query Account --output text)
+```
+
+---
+
+## 📊 **PASO 4: Configurar Servicios Externos**
+
+### **4.1 Setup Automático**
+```bash
+cd ../../
+python scripts/setup_external_services.py
+
+# Este script te guiará a:
+# - Configurar Streamlit Cloud
+# - Conectar Google Colab
+# - Setup GitHub Actions
+# - Configurar notificaciones
+```
+
+### **4.2 Streamlit Cloud (Manual)**
+1. **Ir a**: https://streamlit.io/cloud
+2. **Connect GitHub** → Autorizar
+3. **New app** → Seleccionar repo
+4. **Settings**:
+   - **Main file path**: `analytics/streamlit_dashboard/app.py`
+   - **Python version**: 3.9
+   - **Requirements**: `requirements.txt`
+
+### **4.3 Google Colab Setup**
+1. **Ir a**: https://colab.research.google.com/
+2. **File** → **Open notebook** → **GitHub**
+3. **Connect** → Autorizar repo
+4. **Crear notebook**: `notebooks/ml_analysis.ipynb`
+
+---
+
+## 🤖 **PASO 5: Configurar CI/CD**
+
+### **5.1 Activar GitHub Actions**
+Los workflows ya están configurados en `.github/workflows/`:
+- `data-pipeline.yml`: Pipeline principal
+- `cost-monitor.yml`: Monitoreo de costos
+- `terraform-plan.yml`: Validación de infrastructure
+
+### **5.2 Configurar Triggers**
+```yaml
+# En .github/workflows/data-pipeline.yml
+on:
+  push:
+    branches: [ main, dev ]
+  schedule:
+    - cron: '0 6 * * *'  # Ejecutar diariamente a las 6 AM
+  workflow_dispatch:     # Ejecutar manualmente
+```
+
+### **5.3 Primer Deploy**
+```bash
+git add .
+git commit -m "Initial deployment configuration"
+git push origin main
+
+# GitHub Actions se ejecutará automáticamente
+```
+
+---
+
+## � **PASO 6: Generar y Procesar Datos**
+
+### **6.1 Generar Datos de Prueba**
+```bash
+python ingestion/scripts/data_simulator.py
+
+# Genera:
+# - 1000 registros de customer feedback
+# - Datos sintéticos realistas
+# - Formatos CSV y JSON
+```
+
+### **6.2 Subir Datos a S3**
+```bash
+python ingestion/scripts/s3_uploader.py
+
+# Sube automáticamente a:
+# - s3://customer-satisfaction-raw/
+# - Estructura: año/mes/día/
+```
+
+### **6.3 Ejecutar ETL Glue**
+```bash
+# Manual (primera vez)
+aws glue start-job-run --job-name customer-satisfaction-etl
+
+# O esperar que GitHub Actions lo ejecute automáticamente
+```
+
+---
+
+## 🚀 **PASO 7: Verificar Funcionamiento**
+
+### **7.1 Dashboard Streamlit**
+```bash
+# Local (desarrollo)
+cd analytics/streamlit_dashboard/
+streamlit run app.py
+
+# Ver en: http://localhost:8501
+```
+
+### **7.2 Consultas Athena**
+```sql
+-- Probar en AWS Console → Athena
+SELECT 
+    customer_id,
+    satisfaction_score,
+    feedback_date
+FROM customer_satisfaction_db.processed_feedback
+LIMIT 10;
+```
+
+### **7.3 Verificar Costos**
+```bash
+python scripts/aws_cost_monitor.py
+
+# Debe mostrar: $0.00 o muy cerca
+```
+
+---
+
+## 🐳 **PASO 8: Docker (Alternativo)**
+
+### **8.1 Build y Run**
+```bash
+cd docker/
+docker-compose up -d
+
+# Servicios disponibles:
+# - Dashboard: http://localhost:8501
+# - Monitoring: http://localhost:3000
+# - Cost Monitor: logs en terminal
+```
+
+### **8.2 Verificar Containers**
+```bash
+docker-compose ps
+docker-compose logs -f streamlit-dashboard
+```
+
+---
+
+## 📊 **PASO 9: Monitoreo y Mantenimiento**
+
+### **9.1 Monitoreo Diario**
+```bash
+# Script automático (ya en cron)
+python scripts/aws_cost_monitor.py
+
+# Debe enviar reporte a Slack/email
+```
+
+### **9.2 Backup y Cleanup**
+```bash
+# Backup semanal
+python scripts/backup_data.py
+
+# Cleanup (cuando no uses el proyecto)
 terraform destroy
 ```
 
 ---
 
-## 🐳 **DESARROLLO CON DOCKER (TODO GRATIS)**
+## ⚠️ **Troubleshooting**
 
-### **Iniciar todos los servicios:**
-
+### **🚨 Error: Costos Inesperados**
 ```bash
-cd docker/
+# ACCIÓN INMEDIATA
+terraform destroy
 
-# Configurar variables de entorno
-cat > .env << EOF
-AWS_ACCESS_KEY_ID=tu_access_key
-AWS_SECRET_ACCESS_KEY=tu_secret_key
-AWS_DEFAULT_REGION=us-east-1
-S3_DATA_BUCKET=tu-bucket-name
-ATHENA_WORKGROUP=tu-workgroup
-GRAFANA_ADMIN_PASSWORD=admin123
-EOF
-
-# Iniciar servicios
-docker-compose up -d
-
-# Verificar servicios
-docker-compose ps
+# Investigar
+aws ce get-cost-and-usage \
+    --time-period Start=2025-07-01,End=2025-07-31 \
+    --granularity MONTHLY \
+    --metrics BlendedCost
 ```
 
-### **Acceder a servicios:**
-- **Streamlit Dashboard**: http://localhost:8501
-- **Grafana OSS**: http://localhost:3000 (admin/admin123)
-- **Cost Monitor**: Logs en `docker-compose logs cost-monitor`
+### **🔧 Error: Glue Job Falla**
+```bash
+# Ver logs
+aws logs describe-log-groups --log-group-name-prefix /aws-glue
+
+# Re-ejecutar
+aws glue start-job-run --job-name customer-satisfaction-etl
+```
+
+### **� Error: Dashboard No Carga**
+```bash
+# Verificar S3
+aws s3 ls s3://customer-satisfaction-processed/
+
+# Verificar Athena
+aws athena get-query-execution --query-execution-id [ID]
+```
+
+### **💸 Error: Supera Free Tier**
+**Límites a vigilar:**
+- S3: 5GB total
+- Athena: 5GB escaneado/mes
+- Glue: 1M DPU-hours/mes
+- CloudWatch: 5GB logs/mes
+
+**Solución**: Usar lifecycle policies y optimizar queries.
 
 ---
 
-## 🤖 **AUTOMATIZACIÓN CON GITHUB ACTIONS (2000 MIN GRATIS)**
+## 🎯 **Checklist Final**
 
-### **1. Configurar Secrets en GitHub:**
+### **✅ Verificaciones Post-Deploy**
 
-Ve a tu repositorio → Settings → Secrets and variables → Actions
+- [ ] **AWS Resources**: S3, Glue, Athena creados
+- [ ] **Costos**: Budget configurado y funcionando
+- [ ] **Dashboard**: Streamlit accesible y funcionando
+- [ ] **Datos**: ETL procesando correctamente
+- [ ] **Alertas**: Notificaciones llegando a Slack/email
+- [ ] **GitHub Actions**: Workflows ejecutándose sin errores
+- [ ] **Monitoreo**: Cost monitor reportando $0.00
 
-Agregar:
-```
-AWS_ACCESS_KEY_ID: tu_access_key
-AWS_SECRET_ACCESS_KEY: tu_secret_key
-SLACK_WEBHOOK_URL: https://hooks.slack.com/... (opcional)
-```
+### **🔄 Flujo Normal de Trabajo**
 
-### **2. El workflow se ejecuta automáticamente:**
-- **Diariamente a las 6 AM UTC**
-- **Manualmente desde GitHub Actions**
-- **Monitoreo de costos incluido**
-
----
-
-## 📊 **SERVICIOS EXTERNOS CONFIGURADOS**
-
-### **🎯 Dashboard: Streamlit (GRATIS)**
-```bash
-# Local
-streamlit run analytics/streamlit_dashboard/app.py
-
-# Deploy gratuito: Streamlit Cloud
-# https://streamlit.io/cloud
-```
-
-### **📈 Monitoring: Grafana Cloud (10K series GRATIS)**
-```bash
-# 1. Crear cuenta: https://grafana.com/
-# 2. Configurar datasource Athena
-# 3. Importar dashboards desde docker/grafana/
-```
-
-### **🧠 ML: Google Colab (GPU GRATIS)**
-```python
-# Notebook incluido: notebooks/ml_training_colab.ipynb
-# Conecta automáticamente a tus datos S3
-```
-
-### **🔔 Notificaciones: Slack/Discord (GRATIS)**
-```bash
-# Configurar webhooks en terraform.tfvars
-slack_webhook_url = "https://hooks.slack.com/..."
-discord_webhook_url = "https://discord.com/api/webhooks/..."
-```
+1. **Desarrollo**: Cambios en código local
+2. **Testing**: `docker-compose up` para probar localmente
+3. **Deploy**: `git push` → GitHub Actions se ejecuta automáticamente
+4. **Monitoreo**: Verificar alertas y costos diariamente
+5. **Cleanup**: `terraform destroy` cuando no uses el proyecto
 
 ---
 
-## 💰 **VERIFICACIÓN DE COSTOS**
+## 📞 **Soporte**
 
-### **Monitor automático:**
-```bash
-# Ejecutar verificación
-python scripts/aws_cost_monitor.py
+### **🆘 En caso de problemas:**
+1. **Revisar logs**: `docker-compose logs`
+2. **Consultar troubleshooting** arriba
+3. **GitHub Issues**: Para bugs del código
+4. **AWS Support**: Para problemas de infraestructura
 
-# Output esperado:
-# 📊 Uso S3: 0.5GB de 5GB (10%)
-# 📊 Uso Athena: 0.2GB de 5GB (4%)
-# 💰 Costo estimado: $0.00
-```
+### **📧 Contacto del Equipo**
+- **DevOps**: [email]
+- **Data Engineering**: [email]
+- **Slack**: #customer-analytics
 
-### **Alertas configuradas:**
-- ✅ Email al 80% de uso free tier
-- ✅ Slack/Discord para alertas críticas
-- ✅ Budget AWS máximo $5 (protección)
+---
+
+<div align="center">
+
+## 🎉 **¡Proyecto Desplegado Exitosamente!**
+
+**Costo: $0.00/mes | Funcionalidad: 100% | Monitoreo: 24/7**
+
+</div>
 
 ---
 

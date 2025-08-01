@@ -167,6 +167,10 @@ Sistema de análisis de satisfacción del cliente que utiliza **AWS Free Tier** 
 
 ## 🏗️ **Arquitectura Actual**
 
+### **📊 Diagrama Principal**
+
+![Arquitectura](docs/diagrams/architecture_overview.png)
+
 ```mermaid
 graph TB
     subgraph "🌐 SERVICIOS EXTERNOS (GRATIS)"
@@ -206,6 +210,22 @@ graph TB
     style F fill:#e3f2fd
     style G fill:#e3f2fd
     style H fill:#e3f2fd
+```
+
+### **🔄 Generar Diagramas Actualizados**
+
+```bash
+# Instalar dependencias para diagramas
+pip install -r requirements-diagrams.txt
+
+# Generar diagramas automáticamente
+python scripts/generate_diagrams.py
+
+# Diagramas generados en docs/diagrams/:
+# - architecture_overview.png
+# - data_flow.png  
+# - cost_distribution.png
+# - security_layers.png
 ```
 
 ### **📊 Flujo de Datos**
