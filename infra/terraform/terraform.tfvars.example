@@ -1,0 +1,100 @@
+# =============================================================================
+# CUSTOMER SATISFACTION ANALYTICS - TERRAFORM VARIABLES
+# Configuración para costo $0.00 y servicios externos
+# =============================================================================
+
+# Configuración básica del proyecto
+project_name = "customer-satisfaction-analytics"
+environment  = "dev"
+aws_region   = "us-east-1"
+
+# Email para notificaciones de costos (IMPORTANTE para alertas)
+notification_email = "tu-email@ejemplo.com"
+
+# =============================================================================
+# CONFIGURACIÓN DE SERVICIOS EXTERNOS (FREE ALTERNATIVES)
+# =============================================================================
+
+# Dashboard externo (Streamlit en lugar de QuickSight $9/mes)
+external_dashboard_provider = "streamlit"  # streamlit, grafana, superset, local
+
+# Configuración Streamlit (GRATIS)
+external_streamlit_config = {
+  host_url   = "localhost"    # o tu servidor
+  port       = 8501
+  auth_token = ""             # opcional para seguridad
+}
+
+# Configuración Grafana Cloud (PLAN GRATUITO: 10K series, 14 días)
+external_grafana_config = {
+  url        = "https://your-org.grafana.net"
+  api_key    = ""  # Se configura después del deploy
+  org_id     = ""
+  datasource = "athena"
+}
+
+# Procesador de datos externo (en lugar de solo AWS Glue)
+external_data_processor = "local"  # local, docker, kubernetes, github-actions
+
+# Configuración GitHub Actions (GRATIS: 2000 min/mes)
+github_actions_config = {
+  repository      = "tu-usuario/customer-satisfaction-analytics"
+  workflow_file   = "data-processing.yml"
+  trigger_webhook = ""
+}
+
+# Plataforma ML externa (en lugar de SageMaker)
+external_ml_platform = "local"  # local, colab, kaggle, huggingface, paperspace
+
+# =============================================================================
+# INTEGRACIONES DE NOTIFICACIONES (FREE)
+# =============================================================================
+
+# Slack (GRATIS hasta 10K mensajes)
+slack_webhook_url = ""
+
+# Discord (GRATIS)
+discord_webhook_url = ""
+
+# Telegram Bot (GRATIS)
+telegram_config = {
+  bot_token = ""
+  chat_id   = ""
+}
+
+# =============================================================================
+# CONFIGURACIÓN DE BACKUP EXTERNO
+# =============================================================================
+
+external_backup_config = {
+  provider    = "local"        # gdrive, dropbox, onedrive, local
+  credentials = ""
+  folder_path = "./backups"
+}
+
+# =============================================================================
+# CONFIGURACIÓN DE OPTIMIZACIÓN DE COSTOS
+# =============================================================================
+
+# S3 Lifecycle (optimización automática de costos)
+raw_data_ia_transition_days         = 30   # Standard -> IA
+raw_data_glacier_transition_days    = 90   # IA -> Glacier
+raw_data_deep_archive_transition_days = 365 # Glacier -> Deep Archive
+
+processed_data_ia_transition_days      = 60  # Processed: Standard -> IA
+processed_data_glacier_transition_days = 180 # Processed: IA -> Glacier
+
+# Logs retention (7 años para compliance)
+logs_retention_days = 2555
+
+# CloudWatch y Athena (límites para free tier)
+athena_bytes_scanned_cutoff = 1073741824  # 1GB por query
+enable_cloudwatch_alarms    = true
+
+# Tags adicionales
+additional_tags = {
+  CostCenter  = "analytics"
+  Owner       = "data-team"
+  Environment = "development"
+  FreetieTier = "optimized"
+}

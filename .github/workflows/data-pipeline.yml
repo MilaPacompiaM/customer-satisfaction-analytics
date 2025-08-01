@@ -1,0 +1,280 @@
+name: Customer Satisfaction Analytics - Data Pipeline
+
+on:
+  schedule:
+    # Ejecutar diariamente a las 6 AM UTC (FREE: 2000 min/mes)
+    - cron: '0 6 * * *'
+  
+  workflow_dispatch:
+    # Permitir ejecución manual
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+        - dev
+        - staging
+      
+      force_full_process:
+        description: 'Force full data processing'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  AWS_DEFAULT_REGION: us-east-1
+  PYTHON_VERSION: '3.9'
+
+jobs:
+  # Job 1: Cost monitoring and validation
+  cost-monitoring:
+    runs-on: ubuntu-latest
+    outputs:
+      cost-status: ${{ steps.cost-check.outputs.status }}
+      
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        pip install boto3 pandas requests
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+        
+    - name: Check AWS costs and usage
+      id: cost-check
+      run: |
+        python scripts/aws_cost_monitor.py --environment ${{ github.event.inputs.environment || 'dev' }}
+        echo "status=safe" >> $GITHUB_OUTPUT
+        
+    - name: Send cost report to Slack
+      if: env.SLACK_WEBHOOK_URL != ''
+      run: |
+        python scripts/send_notifications.py --type slack --message "Daily cost check completed for ${{ github.event.inputs.environment || 'dev' }}"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Job 2: Data processing (only if costs are safe)
+  data-processing:
+    runs-on: ubuntu-latest
+    needs: cost-monitoring
+    if: needs.cost-monitoring.outputs.cost-status == 'safe'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        pip install boto3 pandas awswrangler pyarrow fastparquet
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+        
+    - name: Check S3 bucket status
+      run: |
+        aws s3 ls s3://customer-satisfaction-data-lake-${{ github.event.inputs.environment || 'dev' }}-*/ || echo "Bucket not found - infrastructure may not be deployed"
+        
+    - name: Run data simulator (if needed)
+      if: github.event.inputs.force_full_process == 'true'
+      run: |
+        python ingestion/scripts/data_simulator.py --output-format parquet --compress
+        
+    - name: Upload simulated data to S3
+      if: github.event.inputs.force_full_process == 'true'
+      run: |
+        python ingestion/scripts/s3_uploader.py --optimize-size
+        
+    - name: Trigger AWS Glue Crawler
+      run: |
+        CRAWLER_NAME=$(aws glue get-crawlers --query "CrawlerList[?contains(Name, 'customer-satisfaction')].Name" --output text)
+        if [ ! -z "$CRAWLER_NAME" ]; then
+          echo "Starting crawler: $CRAWLER_NAME"
+          aws glue start-crawler --name $CRAWLER_NAME
+        else
+          echo "No crawler found - infrastructure may not be deployed"
+        fi
+        
+    - name: Wait for crawler completion
+      run: |
+        CRAWLER_NAME=$(aws glue get-crawlers --query "CrawlerList[?contains(Name, 'customer-satisfaction')].Name" --output text)
+        if [ ! -z "$CRAWLER_NAME" ]; then
+          echo "Waiting for crawler completion..."
+          while true; do
+            STATUS=$(aws glue get-crawler --name $CRAWLER_NAME --query "Crawler.State" --output text)
+            if [ "$STATUS" != "RUNNING" ]; then
+              break
+            fi
+            echo "Crawler still running... waiting 30s"
+            sleep 30
+          done
+          echo "Crawler completed with status: $STATUS"
+        fi
+
+  # Job 3: Data quality validation
+  data-validation:
+    runs-on: ubuntu-latest
+    needs: data-processing
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        pip install boto3 pandas awswrangler great-expectations
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+        
+    - name: Run data quality tests
+      run: |
+        python tests/data_quality_tests.py --environment ${{ github.event.inputs.environment || 'dev' }}
+        
+    - name: Generate data quality report
+      run: |
+        python scripts/generate_data_quality_report.py
+
+  # Job 4: Update external dashboards
+  update-dashboards:
+    runs-on: ubuntu-latest
+    needs: data-validation
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        pip install requests grafana-api streamlit
+        
+    - name: Update Grafana dashboards
+      if: env.GRAFANA_API_KEY != ''
+      run: |
+        python scripts/update_grafana_dashboards.py
+      env:
+        GRAFANA_URL: ${{ secrets.GRAFANA_URL }}
+        GRAFANA_API_KEY: ${{ secrets.GRAFANA_API_KEY }}
+        
+    - name: Refresh Streamlit cache
+      if: env.STREAMLIT_WEBHOOK != ''
+      run: |
+        curl -X POST ${{ secrets.STREAMLIT_WEBHOOK }}/refresh
+        
+  # Job 5: Backup and cleanup
+  backup-cleanup:
+    runs-on: ubuntu-latest
+    needs: update-dashboards
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        pip install boto3 google-api-python-client
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+        
+    - name: Backup critical data to Google Drive
+      if: env.GDRIVE_CREDENTIALS != ''
+      run: |
+        python scripts/backup_to_gdrive.py --backup-type daily
+      env:
+        GDRIVE_CREDENTIALS: ${{ secrets.GDRIVE_CREDENTIALS }}
+        
+    - name: Cleanup old data (keep costs at $0)
+      run: |
+        python scripts/aws_cost_monitor.py --cleanup --days-to-keep 90
+        
+    - name: Final cost check and alert
+      run: |
+        python scripts/aws_cost_monitor.py --final-check
+        
+  # Job 6: Notifications and reporting
+  notifications:
+    runs-on: ubuntu-latest
+    needs: [cost-monitoring, data-processing, data-validation, update-dashboards, backup-cleanup]
+    if: always()
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Send success notification
+      if: needs.backup-cleanup.result == 'success'
+      run: |
+        MESSAGE="✅ Customer Satisfaction Analytics pipeline completed successfully for ${{ github.event.inputs.environment || 'dev' }}"
+        echo $MESSAGE
+        # Send to configured notification channels
+        if [ ! -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$MESSAGE\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
+        fi
+        
+    - name: Send failure notification
+      if: failure()
+      run: |
+        MESSAGE="❌ Customer Satisfaction Analytics pipeline failed for ${{ github.event.inputs.environment || 'dev' }}. Check GitHub Actions logs."
+        echo $MESSAGE
+        if [ ! -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"$MESSAGE\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
+        fi
+        
+    - name: Update dashboard status
+      run: |
+        echo "Pipeline status: ${{ job.status }}" > pipeline_status.txt
+        echo "Timestamp: $(date)" >> pipeline_status.txt
+        
+    - name: Upload pipeline report
+      uses: actions/upload-artifact@v4
+      with:
+        name: pipeline-report-${{ github.run_number }}
+        path: |
+          pipeline_status.txt
+          *.log
