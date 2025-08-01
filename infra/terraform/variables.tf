@@ -182,4 +182,126 @@ variable "backup_retention_days" {
   description = "Días de retención para backups"
   type        = number
   default     = 30
+}
+
+# Variables para servicios externos (THIRD-PARTY INTEGRATIONS)
+variable "external_dashboard_provider" {
+  description = "Proveedor de dashboard externo (streamlit, grafana, superset)"
+  type        = string
+  default     = "streamlit"
+  
+  validation {
+    condition     = contains(["streamlit", "grafana", "superset", "local"], var.external_dashboard_provider)
+    error_message = "Dashboard provider debe ser streamlit, grafana, superset o local."
+  }
+}
+
+variable "external_streamlit_config" {
+  description = "Configuración para Streamlit externo"
+  type = object({
+    host_url    = string
+    port        = number
+    auth_token  = string
+  })
+  default = {
+    host_url   = "localhost"
+    port       = 8501
+    auth_token = ""
+  }
+}
+
+variable "external_grafana_config" {
+  description = "Configuración para Grafana Cloud o self-hosted"
+  type = object({
+    url         = string
+    api_key     = string
+    org_id      = string
+    datasource  = string
+  })
+  default = {
+    url        = ""
+    api_key    = ""
+    org_id     = ""
+    datasource = "athena"
+  }
+}
+
+variable "external_data_processor" {
+  description = "Procesador de datos externo (local, docker, kubernetes)"
+  type        = string
+  default     = "local"
+  
+  validation {
+    condition     = contains(["local", "docker", "kubernetes", "github-actions"], var.external_data_processor)
+    error_message = "Data processor debe ser local, docker, kubernetes o github-actions."
+  }
+}
+
+variable "github_actions_config" {
+  description = "Configuración para GitHub Actions como procesador"
+  type = object({
+    repository      = string
+    workflow_file   = string
+    trigger_webhook = string
+  })
+  default = {
+    repository      = ""
+    workflow_file   = "data-processing.yml"
+    trigger_webhook = ""
+  }
+}
+
+variable "external_ml_platform" {
+  description = "Plataforma ML externa (local, colab, kaggle, huggingface)"
+  type        = string
+  default     = "local"
+  
+  validation {
+    condition     = contains(["local", "colab", "kaggle", "huggingface", "paperspace"], var.external_ml_platform)
+    error_message = "ML platform debe ser local, colab, kaggle, huggingface o paperspace."
+  }
+}
+
+# Variables para integraciones de notificaciones externas
+variable "slack_webhook_url" {
+  description = "URL del webhook de Slack para notificaciones"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "discord_webhook_url" {
+  description = "URL del webhook de Discord para notificaciones"
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "telegram_config" {
+  description = "Configuración para notificaciones de Telegram"
+  type = object({
+    bot_token = string
+    chat_id   = string
+  })
+  default = {
+    bot_token = ""
+    chat_id   = ""
+  }
+  sensitive = true
+}
+
+# Variables para almacenamiento externo adicional
+variable "external_backup_config" {
+  description = "Configuración para backup externo"
+  type = object({
+    provider    = string  # "gdrive", "dropbox", "onedrive", "local"
+    credentials = string
+    folder_path = string
+  })
+  default = {
+    provider    = "local"
+    credentials = ""
+    folder_path = "./backups"
+  }
+  sensitive = true
 } 

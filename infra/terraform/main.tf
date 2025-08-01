@@ -364,6 +364,92 @@ resource "aws_athena_workgroup" "customer_satisfaction_workgroup" {
   }
 }
 
+# Budget para protección de costos (FREE TIER PROTECTION)
+resource "aws_budgets_budget" "zero_spend_protection" {
+  name         = "${var.project_name}-zero-spend-protection"
+  budget_type  = "COST"
+  limit_amount = "5"
+  limit_unit   = "USD"
+  time_unit    = "MONTHLY"
+  
+  cost_filters {
+    service = [
+      "Amazon Simple Storage Service",
+      "Amazon Athena",
+      "AWS Glue",
+      "Amazon CloudWatch"
+    ]
+  }
+  
+  notification {
+    comparison_operator        = "GREATER_THAN"
+    threshold                 = 1
+    threshold_type            = "ABSOLUTE_VALUE"
+    notification_type          = "ACTUAL"
+    subscriber_email_addresses = [var.notification_email != "" ? var.notification_email : "admin@${var.project_name}.com"]
+  }
+  
+  notification {
+    comparison_operator        = "GREATER_THAN"
+    threshold                 = 80
+    threshold_type            = "PERCENTAGE"
+    notification_type          = "FORECASTED"
+    subscriber_email_addresses = [var.notification_email != "" ? var.notification_email : "admin@${var.project_name}.com"]
+  }
+
+  tags = {
+    Name = "Free Tier Cost Protection"
+    Purpose = "Prevent unexpected charges"
+  }
+}
+
+# CloudWatch Alarm para S3 Storage (FREE TIER PROTECTION)
+resource "aws_cloudwatch_metric_alarm" "s3_storage_alarm" {
+  alarm_name          = "${var.project_name}-s3-approaching-limit"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "BucketSizeBytes"
+  namespace           = "AWS/S3"
+  period              = "86400"  # 24 horas
+  statistic           = "Average"
+  threshold           = "4294967296"  # 4GB (alerta antes de 5GB)
+  alarm_description   = "S3 bucket approaching free tier limit (4GB/5GB)"
+  
+  dimensions = {
+    BucketName  = aws_s3_bucket.data_lake.bucket
+    StorageType = "StandardStorage"
+  }
+
+  alarm_actions = []  # No actions, just monitoring
+  
+  tags = {
+    Name = "S3 Free Tier Monitor"
+  }
+}
+
+# CloudWatch Alarm para Athena queries (FREE TIER PROTECTION)
+resource "aws_cloudwatch_metric_alarm" "athena_data_scanned_alarm" {
+  alarm_name          = "${var.project_name}-athena-data-scanned-limit"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "DataScannedInBytes"
+  namespace           = "AWS/Athena"
+  period              = "86400"
+  statistic           = "Sum"
+  threshold           = "4294967296"  # 4GB (alerta antes de 5GB)
+  alarm_description   = "Athena data scanned approaching free tier limit"
+  
+  dimensions = {
+    WorkGroup = aws_athena_workgroup.customer_satisfaction_workgroup.name
+  }
+
+  alarm_actions = []  # No actions, just monitoring
+  
+  tags = {
+    Name = "Athena Free Tier Monitor"
+  }
+}
+
 # Bucket para logs de aplicación
 resource "aws_s3_bucket" "logs_bucket" {
   bucket = "${var.project_name}-logs-${var.environment}-${random_id.logs_suffix.hex}"
@@ -440,4 +526,55 @@ output "crawler_name" {
 output "processing_job_name" {
   description = "Nombre del job de procesamiento"
   value       = aws_glue_job.data_processing_job.name
+}
+
+# Outputs para integración con servicios externos
+output "external_integration_config" {
+  description = "Configuración para integración con servicios externos"
+  value = {
+    # Configuración AWS para servicios externos
+    aws_region           = var.aws_region
+    s3_data_bucket      = aws_s3_bucket.data_lake.bucket
+    s3_results_bucket   = aws_s3_bucket.athena_results.bucket
+    athena_workgroup    = aws_athena_workgroup.customer_satisfaction_workgroup.name
+    glue_database       = aws_glue_catalog_database.customer_satisfaction_db.name
+    
+    # URLs y endpoints
+    s3_data_path        = "s3://${aws_s3_bucket.data_lake.bucket}/"
+    athena_results_path = "s3://${aws_s3_bucket.athena_results.bucket}/query-results/"
+    
+    # Configuración de servicios externos
+    dashboard_provider  = var.external_dashboard_provider
+    data_processor      = var.external_data_processor
+    ml_platform         = var.external_ml_platform
+  }
+  sensitive = false
+}
+
+output "external_dashboard_config" {
+  description = "Configuración específica para dashboard externo"
+  value = {
+    streamlit = var.external_streamlit_config
+    grafana   = {
+      url        = var.external_grafana_config.url
+      org_id     = var.external_grafana_config.org_id
+      datasource = var.external_grafana_config.datasource
+    }
+    # API key se mantiene sensible
+  }
+  sensitive = false
+}
+
+output "aws_credentials_template" {
+  description = "Template de credenciales AWS para servicios externos"
+  value = {
+    aws_access_key_id     = "YOUR_AWS_ACCESS_KEY_ID"
+    aws_secret_access_key = "YOUR_AWS_SECRET_ACCESS_KEY"
+    aws_region           = var.aws_region
+    aws_output_format    = "json"
+    
+    # Para usar en .env files
+    env_template = "AWS_ACCESS_KEY_ID=your_key\nAWS_SECRET_ACCESS_KEY=your_secret\nAWS_DEFAULT_REGION=${var.aws_region}\nS3_BUCKET=${aws_s3_bucket.data_lake.bucket}\nATHENA_WORKGROUP=${aws_athena_workgroup.customer_satisfaction_workgroup.name}"
+  }
+  sensitive = false
 } 
