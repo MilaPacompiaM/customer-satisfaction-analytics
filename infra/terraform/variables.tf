@@ -27,6 +27,12 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "aws_account_id" {
+  description = "ID de la cuenta AWS"
+  type        = string
+  default     = "155537880398"
+}
+
 # Variables para S3
 variable "data_bucket_name" {
   description = "Nombre base del bucket S3 para el Data Lake"
@@ -165,10 +171,42 @@ variable "enable_cloudwatch_alarms" {
   default     = true
 }
 
+variable "monitoring_enabled" {
+  description = "Habilitar monitoreo avanzado"
+  type        = bool
+  default     = true
+}
+
 variable "notification_email" {
   description = "Email para notificaciones de alarmas"
   type        = string
   default     = ""
+}
+
+# Variables para buckets S3 específicos
+variable "s3_athena_results_bucket" {
+  description = "Nombre del bucket S3 para resultados de Athena"
+  type        = string
+  default     = "customer-satisfaction-athena-results"
+}
+
+variable "s3_logs_bucket" {
+  description = "Nombre del bucket S3 para logs"
+  type        = string
+  default     = "customer-satisfaction-logs"
+}
+
+# Variables para presupuesto
+variable "budget_amount" {
+  description = "Cantidad del presupuesto en USD"
+  type        = number
+  default     = 1.00
+}
+
+variable "budget_time_unit" {
+  description = "Unidad de tiempo para el presupuesto"
+  type        = string
+  default     = "MONTHLY"
 }
 
 # Variables para backup y disaster recovery
