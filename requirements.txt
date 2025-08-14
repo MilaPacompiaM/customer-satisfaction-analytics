@@ -13,11 +13,11 @@ mimesis>=11.0.0
 # AWS SDK y servicios de nube
 boto3>=1.29.0
 awscli>=1.29.0
-aws-glue-libs>=4.0.0
+# aws-glue-libs>=4.0.0  # Solo disponible en entorno Glue
 
-# Big Data y procesamiento
-pyspark>=3.5.0
-delta-spark>=2.4.0
+# Big Data y procesamiento (opcional para desarrollo local)
+# pyspark>=3.5.0  # Comentado para evitar errores en Windows
+# delta-spark>=2.4.0  # Comentado para desarrollo local
 pyarrow>=14.0.0
 
 # Machine Learning
