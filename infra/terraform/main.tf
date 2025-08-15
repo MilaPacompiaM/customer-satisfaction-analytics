@@ -44,6 +44,11 @@ resource "random_id" "logs_suffix" {
 # S3 Bucket para Data Lake
 resource "aws_s3_bucket" "data_lake" {
   bucket = "${var.project_name}-data-lake-${var.environment}-${random_id.data_lake_suffix.hex}"
+  
+  # Proteger contra eliminación accidental
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_s3_bucket_versioning" "data_lake_versioning" {
@@ -65,6 +70,11 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "data_lake_encrypt
 # S3 Bucket para resultados de Athena
 resource "aws_s3_bucket" "athena_results" {
   bucket = "${var.project_name}-athena-results-${var.environment}-${random_id.athena_suffix.hex}"
+  
+  # Proteger contra eliminación accidental  
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 resource "aws_s3_bucket_versioning" "athena_results_versioning" {

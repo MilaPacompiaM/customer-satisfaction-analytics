@@ -82,11 +82,14 @@ python scripts/data_simulator.py
 
 ### **4. Ejecutar Dashboard**
 ```bash
-# Opción 1: Script rápido (Windows)
+# Opción 1: Script rápido (Windows) - RECOMENDADO
 run_dashboard.bat
 
-# Opción 2: Manual
+# Opción 2: Desde raíz del proyecto
 streamlit run streamlit_app.py
+
+# Opción 3: Directamente desde subdirectorio  
+streamlit run analytics/streamlit_dashboard/app.py
 ```
 
 ### **5. Acceder al Dashboard**
