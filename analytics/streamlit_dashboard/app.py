@@ -25,6 +25,36 @@ from typing import Dict, List, Optional
 import warnings
 warnings.filterwarnings('ignore')
 
+
+def improve_chart_design(fig, title_color='#1f77b4'):
+    """Aplicar diseño mejorado a los gráficos Plotly."""
+    fig.update_layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='#ffffff',
+        font=dict(color='#333333', size=12),
+        title_font_color=title_color,
+        title_font_size=16,
+        title_x=0.5,
+        showlegend=True,
+        legend=dict(
+            bgcolor='rgba(255,255,255,0.8)',
+            bordercolor='#cccccc',
+            borderwidth=1
+        ),
+        xaxis=dict(
+            gridcolor='#e0e0e0',
+            linecolor='#cccccc',
+            tickfont=dict(color='#333333')
+        ),
+        yaxis=dict(
+            gridcolor='#e0e0e0',
+            linecolor='#cccccc',
+            tickfont=dict(color='#333333')
+        )
+    )
+    return fig
+
+
 # Configuración de página
 st.set_page_config(
     page_title="Customer Satisfaction Analytics",
@@ -48,31 +78,69 @@ st.markdown("""
     }
     
     .metric-container {
-        background: white;
-        padding: 1rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        background: #ffffff;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         border-left: 4px solid #1f77b4;
+        border: 1px solid #e0e0e0;
     }
     
     .insight-box {
-        background: #f0f8ff;
-        padding: 1rem;
-        border-radius: 8px;
+        background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+        padding: 1.2rem;
+        border-radius: 10px;
         border-left: 4px solid #4CAF50;
         margin: 1rem 0;
+        border: 1px solid #d0d0d0;
+        color: #333333;
     }
     
     .warning-box {
-        background: #fff3cd;
-        padding: 1rem;
-        border-radius: 8px;
+        background: linear-gradient(135deg, #fff3cd, #ffecb3);
+        padding: 1.2rem;
+        border-radius: 10px;
         border-left: 4px solid #ff9800;
         margin: 1rem 0;
+        border: 1px solid #d0d0d0;
+        color: #333333;
     }
     
     .sidebar .sidebar-content {
         background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    /* Mejorar visibilidad de métricas */
+    .metric-container h3 {
+        color: #1f77b4 !important;
+        font-weight: 600;
+    }
+    
+    .metric-container p {
+        color: #333333 !important;
+        font-weight: 500;
+    }
+    
+    /* Mejorar contraste en gráficos */
+    .stPlotlyChart {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border: 1px solid #e0e0e0;
+    }
+    
+    /* Mejorar filtros */
+    .stSelectbox > div > div {
+        background-color: #ffffff !important;
+        border: 2px solid #1f77b4 !important;
+        border-radius: 8px;
+    }
+    
+    .stDateInput > div > div {
+        background-color: #ffffff !important;
+        border: 2px solid #1f77b4 !important;
+        border-radius: 8px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -225,30 +293,87 @@ def load_data() -> Dict[str, pd.DataFrame]:
     datasets = {}
     
     with st.spinner('🔄 Cargando datos...'):
-        # Métricas principales
-        datasets['metrics'] = connector.execute_query("""
-            SELECT fecha, canal, total_tickets, satisfaccion_promedio, 
-                   tasa_satisfaccion, tasa_resolucion, duracion_promedio,
-                   clientes_unicos, nps_score_calculado
-            FROM satisfaction_metrics 
-            WHERE fecha >= CURRENT_DATE - INTERVAL '90' DAY
-            ORDER BY fecha DESC
-        """)
-        
-        # Análisis NPS
-        datasets['nps'] = connector.execute_query("""
-            SELECT mes, categoria_nps, total_encuestas, nps_promedio, porcentaje
-            FROM nps_analysis 
-            WHERE mes >= CURRENT_DATE - INTERVAL '6' MONTH
-        """)
-        
-        # Rendimiento de agentes
-        datasets['agents'] = connector.execute_query("""
-            SELECT agente_id, canal, total_tickets, satisfaccion_promedio,
-                   duracion_promedio, tasa_resolucion, clientes_atendidos
-            FROM agent_performance 
-            WHERE total_tickets >= 10
-        """)
+        try:
+            # Intentar cargar desde AWS Athena
+            datasets['metrics'] = connector.execute_query("""
+                SELECT fecha, canal, total_tickets, satisfaccion_promedio, 
+                       tasa_satisfaccion, tasa_resolucion, duracion_promedio,
+                       clientes_unicos, nps_score_calculado
+                FROM satisfaction_metrics 
+                WHERE fecha >= CURRENT_DATE - INTERVAL '90' DAY
+                ORDER BY fecha DESC
+            """)
+            
+            datasets['nps'] = connector.execute_query("""
+                SELECT mes, categoria_nps, total_encuestas, nps_promedio, porcentaje
+                FROM nps_analysis 
+                WHERE mes >= CURRENT_DATE - INTERVAL '6' MONTH
+            """)
+            
+            datasets['agents'] = connector.execute_query("""
+                SELECT agente_id, canal, total_tickets, satisfaccion_promedio,
+                       duracion_promedio, tasa_resolucion, clientes_atendidos
+                FROM agent_performance 
+                WHERE total_tickets >= 10
+            """)
+            
+        except Exception as e:
+            st.warning("⚠️ Usando datos simulados: No se pudo conectar a AWS")
+            
+            # Usar datos simulados si hay errores
+            from datetime import datetime, timedelta
+            import random
+            
+            # Datos simulados de métricas
+            dates = [datetime.now() - timedelta(days=i) for i in range(30)]
+            channels = ['telefono', 'chat', 'email', 'presencial']
+            
+            metrics_data = []
+            for date in dates:
+                for channel in channels:
+                    metrics_data.append({
+                        'fecha': date.strftime('%Y-%m-%d'),
+                        'canal': channel,
+                        'total_tickets': random.randint(50, 200),
+                        'satisfaccion_promedio': random.uniform(3.5, 4.8),
+                        'tasa_satisfaccion': random.uniform(0.75, 0.95),
+                        'tasa_resolucion': random.uniform(0.85, 0.98),
+                        'duracion_promedio': random.uniform(5, 25),
+                        'clientes_unicos': random.randint(40, 180),
+                        'nps_score_calculado': random.uniform(-10, 50)
+                    })
+            
+            datasets['metrics'] = pd.DataFrame(metrics_data)
+            
+            # Datos simulados de NPS
+            nps_data = []
+            for i in range(6):
+                for categoria in ['promotores', 'neutrales', 'detractores']:
+                    nps_data.append({
+                        'mes': f"2025-{8-i:02d}",
+                        'categoria_nps': categoria,
+                        'total_encuestas': random.randint(100, 500),
+                        'nps_promedio': random.uniform(6, 9) if categoria == 'promotores' else random.uniform(4, 6),
+                        'porcentaje': random.uniform(20, 40)
+                    })
+            
+            datasets['nps'] = pd.DataFrame(nps_data)
+            
+            # Datos simulados de agentes
+            agents_data = []
+            for i in range(20):
+                for channel in channels:
+                    agents_data.append({
+                        'agente_id': f"AGT{i:03d}",
+                        'canal': channel,
+                        'total_tickets': random.randint(50, 300),
+                        'satisfaccion_promedio': random.uniform(3.2, 4.9),
+                        'duracion_promedio': random.uniform(5, 30),
+                        'tasa_resolucion': random.uniform(0.70, 0.99),
+                        'clientes_atendidos': random.randint(30, 250)
+                    })
+            
+            datasets['agents'] = pd.DataFrame(agents_data)
     
     return datasets
 
@@ -352,6 +477,9 @@ def create_satisfaction_trend(df: pd.DataFrame):
         yaxis=dict(range=[1, 5])
     )
     
+    # Aplicar diseño mejorado
+    fig = improve_chart_design(fig)
+    
     # Agregar línea de objetivo
     fig.add_hline(y=4.0, line_dash="dash", line_color="red", 
                   annotation_text="Objetivo: 4.0")
@@ -385,6 +513,7 @@ def create_channel_analysis(df: pd.DataFrame):
         )
         fig1.update_traces(texttemplate='%{text}', textposition='outside')
         fig1.update_layout(height=300, showlegend=False)
+        fig1 = improve_chart_design(fig1)
         st.plotly_chart(fig1, use_container_width=True)
     
     with col2:
@@ -417,6 +546,7 @@ def create_channel_analysis(df: pd.DataFrame):
             title="Comparación de Rendimiento por Canal",
             height=300
         )
+        fig2 = improve_chart_design(fig2)
         st.plotly_chart(fig2, use_container_width=True)
 
 
@@ -442,6 +572,7 @@ def create_nps_analysis(nps_df: pd.DataFrame):
             }
         )
         fig1.update_traces(textinfo='percent+label')
+        fig1 = improve_chart_design(fig1)
         st.plotly_chart(fig1, use_container_width=True)
     
     with col2:
@@ -460,6 +591,7 @@ def create_nps_analysis(nps_df: pd.DataFrame):
                 'detractores': '#F44336'
             }
         )
+        fig2 = improve_chart_design(fig2)
         st.plotly_chart(fig2, use_container_width=True)
     
     # Calcular NPS Score
@@ -502,7 +634,14 @@ def create_agent_performance(agents_df: pd.DataFrame):
             color='satisfaccion_promedio',
             color_continuous_scale='Viridis'
         )
-        fig1.update_xaxis(tickangle=45)
+        fig1.update_layout(
+            xaxis_tickangle=45,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            font=dict(color='#333333'),
+            title_font_color='#1f77b4'
+        )
+        fig1 = improve_chart_design(fig1)
         st.plotly_chart(fig1, use_container_width=True)
     
     with col2:
@@ -516,6 +655,7 @@ def create_agent_performance(agents_df: pd.DataFrame):
             title='Satisfacción vs Volumen de Tickets',
             hover_data=['agente_id']
         )
+        fig2 = improve_chart_design(fig2)
         st.plotly_chart(fig2, use_container_width=True)
 
 
