@@ -1,23 +1,32 @@
 #!/usr/bin/env python3
 """
-Setup automático para Customer Satisfaction Analytics
-Configuración de servicios externos y validación de costo $0.00
+🚀 CONFIGURADOR AUTOMÁTICO DE SERVICIOS EXTERNOS
+Análisis de Satisfacción al Cliente - Customer Satisfaction Analytics
+
+Este script te guía paso a paso para configurar todos los servicios externos necesarios.
 """
 
 import os
 import json
 import subprocess
 import sys
+import webbrowser
 from pathlib import Path
 import requests
 from typing import Dict, List, Optional
+from datetime import datetime
 
 class ExternalServicesSetup:
     """Setup automático para servicios externos gratuitos."""
     
     def __init__(self):
         self.project_root = Path(__file__).parent.parent
-        self.config = {}
+        self.config = {
+            "proyecto": "customer-satisfaction-analytics",
+            "ambiente": "production", 
+            "aws_region": "us-east-1",
+            "servicios_completados": []
+        }
         self.errors = []
         
     def check_prerequisites(self) -> bool:
