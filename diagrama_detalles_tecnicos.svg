@@ -1,0 +1,241 @@
+<svg width="1200" height="900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradientes -->
+    <linearGradient id="awsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff9900;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#ffcc66;stop-opacity:0.9" />
+    </linearGradient>
+    <linearGradient id="localGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4caf50;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#81c784;stop-opacity:0.9" />
+    </linearGradient>
+    <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9c27b0;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#ba68c8;stop-opacity:0.9" />
+    </linearGradient>
+    
+    <!-- Sombras -->
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.2"/>
+    </filter>
+    
+    <!-- Flecha -->
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="1200" height="900" fill="#f8f9fa" stroke="#dee2e6" stroke-width="2"/>
+
+  <!-- Título -->
+  <text x="600" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1f77b4">
+    🔧 Detalles Técnicos - Customer Satisfaction Analytics
+  </text>
+  
+  <text x="600" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#666">
+    Infraestructura AWS Free Tier + Servicios Locales + Monitoreo de Costos
+  </text>
+
+  <!-- Sección AWS Cloud -->
+  <g id="awsSection">
+    <rect x="50" y="90" width="500" height="320" rx="12" ry="12" fill="url(#awsGradient)" stroke="#ff6f00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="300" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#bf360c">
+      ☁️ AWS CLOUD (Free Tier)
+    </text>
+    <text x="300" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5d4037">
+      Account: 155537880398 | Region: us-east-1
+    </text>
+
+    <!-- S3 Storage -->
+    <rect x="70" y="150" width="200" height="100" rx="6" ry="6" fill="#ffffff" stroke="#ff8a65" stroke-width="1"/>
+    <text x="170" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d84315">
+      📦 S3 Storage
+    </text>
+    
+    <text x="80" y="190" font-family="Arial, sans-serif" font-size="10" fill="#333">• Data Lake: &lt;100MB/5GB</text>
+    <text x="80" y="205" font-family="Arial, sans-serif" font-size="10" fill="#333">• Athena Results: &lt;10MB</text>
+    <text x="80" y="220" font-family="Arial, sans-serif" font-size="10" fill="#333">• Logs: &lt;50MB</text>
+    <text x="80" y="235" font-family="Arial, sans-serif" font-size="10" fill="#333">• Cifrado AES-256</text>
+
+    <!-- Analytics Layer -->
+    <rect x="290" y="150" width="200" height="100" rx="6" ry="6" fill="#ffffff" stroke="#ff8a65" stroke-width="1"/>
+    <text x="390" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d84315">
+      🔍 Analytics
+    </text>
+    
+    <text x="300" y="190" font-family="Arial, sans-serif" font-size="10" fill="#333">• Athena: &lt;5GB scan/mes</text>
+    <text x="300" y="205" font-family="Arial, sans-serif" font-size="10" fill="#333">• Glue: &lt;2h DPU/mes</text>
+    <text x="300" y="220" font-family="Arial, sans-serif" font-size="10" fill="#333">• Query limit: 1GB</text>
+    <text x="300" y="235" font-family="Arial, sans-serif" font-size="10" fill="#333">• Workgroup configurado</text>
+
+    <!-- Monitoreo y Costos -->
+    <rect x="70" y="270" width="420" height="120" rx="6" ry="6" fill="#ffffff" stroke="#ff8a65" stroke-width="1"/>
+    <text x="280" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d84315">
+      🛡️ Monitoreo y Control de Costos
+    </text>
+    
+    <text x="80" y="315" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">Protecciones:</text>
+    <text x="90" y="330" font-family="Arial, sans-serif" font-size="10" fill="#333">• Budget Alert: $0.50 threshold</text>
+    <text x="90" y="345" font-family="Arial, sans-serif" font-size="10" fill="#333">• CloudWatch: &lt;5GB logs/mes</text>
+    <text x="90" y="360" font-family="Arial, sans-serif" font-size="10" fill="#333">• Auto cleanup: 90+ días</text>
+    <text x="90" y="375" font-family="Arial, sans-serif" font-size="10" fill="#333">• Lifecycle policies habilitadas</text>
+
+    <text x="300" y="315" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#333">Uso Actual:</text>
+    <text x="310" y="330" font-family="Arial, sans-serif" font-size="10" fill="#333">• S3: 2% del Free Tier</text>
+    <text x="310" y="345" font-family="Arial, sans-serif" font-size="10" fill="#333">• Athena: 0.2% del Free Tier</text>
+    <text x="310" y="360" font-family="Arial, sans-serif" font-size="10" fill="#333">• Glue: 0% del Free Tier</text>
+    <text x="310" y="375" font-family="Arial, sans-serif" font-size="10" fill="#333">• 💰 Costo: $0.00/mes</text>
+  </g>
+
+  <!-- Sección Local Environment -->
+  <g id="localSection">
+    <rect x="580" y="90" width="350" height="320" rx="12" ry="12" fill="url(#localGradient)" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+    <text x="755" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1b5e20">
+      💻 LOCAL ENVIRONMENT
+    </text>
+    <text x="755" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#2e7d32">
+      Windows 11 | Python 3.13 | .venv
+    </text>
+
+    <!-- Dashboard -->
+    <rect x="600" y="150" width="300" height="80" rx="6" ry="6" fill="#ffffff" stroke="#66bb6a" stroke-width="1"/>
+    <text x="750" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2e7d32">
+      🎨 Streamlit Dashboard
+    </text>
+    
+    <text x="610" y="190" font-family="Arial, sans-serif" font-size="10" fill="#333">• 793 líneas de código Python</text>
+    <text x="610" y="205" font-family="Arial, sans-serif" font-size="10" fill="#333">• URL: http://localhost:8501</text>
+    <text x="610" y="220" font-family="Arial, sans-serif" font-size="10" fill="#333">• Cache TTL: 1 hora | Responsive</text>
+
+    <!-- Data Storage -->
+    <rect x="600" y="245" width="300" height="70" rx="6" ry="6" fill="#ffffff" stroke="#66bb6a" stroke-width="1"/>
+    <text x="750" y="265" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2e7d32">
+      💾 Local Data Storage
+    </text>
+    
+    <text x="610" y="285" font-family="Arial, sans-serif" font-size="10" fill="#333">• data/simulated/ (54.3MB total)</text>
+    <text x="610" y="300" font-family="Arial, sans-serif" font-size="10" fill="#333">• 171,031 registros | CSV + Parquet</text>
+
+    <!-- Python Environment -->
+    <rect x="600" y="330" width="300" height="70" rx="6" ry="6" fill="#ffffff" stroke="#66bb6a" stroke-width="1"/>
+    <text x="750" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#2e7d32">
+      🐍 Python Environment
+    </text>
+    
+    <text x="610" y="370" font-family="Arial, sans-serif" font-size="10" fill="#333">• Virtual env: .venv/ isolation</text>
+    <text x="610" y="385" font-family="Arial, sans-serif" font-size="10" fill="#333">• 15+ packages | Streamlit, Plotly, Pandas</text>
+  </g>
+
+  <!-- Flujo de Datos -->
+  <g id="dataFlow">
+    <rect x="50" y="440" width="880" height="180" rx="12" ry="12" fill="url(#flowGradient)" stroke="#7b1fa2" stroke-width="2" filter="url(#shadow)"/>
+    <text x="490" y="465" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#4a148c">
+      🔄 FLUJO DE DATOS DETALLADO
+    </text>
+
+    <!-- Paso 1: Generación -->
+    <rect x="80" y="480" width="150" height="80" rx="6" ry="6" fill="#ffffff" stroke="#ab47bc" stroke-width="1"/>
+    <text x="155" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#7b1fa2">
+      1️⃣ GENERACIÓN
+    </text>
+    <text x="90" y="520" font-family="Arial, sans-serif" font-size="9" fill="#333">🤖 data_simulator.py</text>
+    <text x="90" y="535" font-family="Arial, sans-serif" font-size="9" fill="#333">📊 171,031 registros</text>
+    <text x="90" y="550" font-family="Arial, sans-serif" font-size="9" fill="#333">⏱️ Tiempo: ~30 seg</text>
+
+    <!-- Paso 2: Procesamiento -->
+    <rect x="260" y="480" width="150" height="80" rx="6" ry="6" fill="#ffffff" stroke="#ab47bc" stroke-width="1"/>
+    <text x="335" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#7b1fa2">
+      2️⃣ PROCESAMIENTO
+    </text>
+    <text x="270" y="520" font-family="Arial, sans-serif" font-size="9" fill="#333">⚙️ ETL + ML Analysis</text>
+    <text x="270" y="535" font-family="Arial, sans-serif" font-size="9" fill="#333">🧠 NLTK Sentiment</text>
+    <text x="270" y="550" font-family="Arial, sans-serif" font-size="9" fill="#333">📈 KPI Calculations</text>
+
+    <!-- Paso 3: Almacenamiento -->
+    <rect x="440" y="480" width="150" height="80" rx="6" ry="6" fill="#ffffff" stroke="#ab47bc" stroke-width="1"/>
+    <text x="515" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#7b1fa2">
+      3️⃣ ALMACENAMIENTO
+    </text>
+    <text x="450" y="520" font-family="Arial, sans-serif" font-size="9" fill="#333">💾 Local + S3 Cloud</text>
+    <text x="450" y="535" font-family="Arial, sans-serif" font-size="9" fill="#333">🔍 Glue Catalog</text>
+    <text x="450" y="550" font-family="Arial, sans-serif" font-size="9" fill="#333">📊 Schema validation</text>
+
+    <!-- Paso 4: Visualización -->
+    <rect x="620" y="480" width="150" height="80" rx="6" ry="6" fill="#ffffff" stroke="#ab47bc" stroke-width="1"/>
+    <text x="695" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#7b1fa2">
+      4️⃣ VISUALIZACIÓN
+    </text>
+    <text x="630" y="520" font-family="Arial, sans-serif" font-size="9" fill="#333">🎨 Dashboard Streamlit</text>
+    <text x="630" y="535" font-family="Arial, sans-serif" font-size="9" fill="#333">📈 Plotly Charts</text>
+    <text x="630" y="550" font-family="Arial, sans-serif" font-size="9" fill="#333">🧠 AI Insights</text>
+
+    <!-- Paso 5: Monitoreo -->
+    <rect x="800" y="480" width="120" height="80" rx="6" ry="6" fill="#ffffff" stroke="#ab47bc" stroke-width="1"/>
+    <text x="860" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#7b1fa2">
+      5️⃣ MONITOREO
+    </text>
+    <text x="810" y="520" font-family="Arial, sans-serif" font-size="9" fill="#333">💰 Cost Monitor</text>
+    <text x="810" y="535" font-family="Arial, sans-serif" font-size="9" fill="#333">🔔 Alertas</text>
+    <text x="810" y="550" font-family="Arial, sans-serif" font-size="9" fill="#333">🧹 Auto cleanup</text>
+
+    <!-- Flechas de flujo -->
+    <path d="M230 520 L260 520" stroke="#4a148c" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M410 520 L440 520" stroke="#4a148c" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M590 520 L620 520" stroke="#4a148c" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M770 520 L800 520" stroke="#4a148c" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Métricas de rendimiento -->
+    <text x="490" y="585" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#4a148c">
+      ⚡ MÉTRICAS DE RENDIMIENTO
+    </text>
+    
+    <text x="80" y="605" font-family="Arial, sans-serif" font-size="10" fill="#333">🚀 Generación: ~30 seg | 📊 Startup: ~5 seg | ⚡ Query: &lt;2 seg | 📈 Render: &lt;1 seg</text>
+  </g>
+
+  <!-- Especificaciones Técnicas -->
+  <g id="techSpecs">
+    <rect x="50" y="650" width="420" height="200" rx="10" ry="10" fill="#ffffff" stroke="#e0e0e0" stroke-width="2" filter="url(#shadow)"/>
+    <text x="260" y="675" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1f77b4">
+      🔧 ESPECIFICACIONES TÉCNICAS
+    </text>
+    
+    <text x="70" y="700" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">📊 Métricas de Código:</text>
+    <text x="80" y="720" font-family="Arial, sans-serif" font-size="10" fill="#666">• Dashboard: 793 líneas (Streamlit + Plotly)</text>
+    <text x="80" y="735" font-family="Arial, sans-serif" font-size="10" fill="#666">• Cost Monitor: 803 líneas (AWS SDK + Alertas)</text>
+    <text x="80" y="750" font-family="Arial, sans-serif" font-size="10" fill="#666">• Data Simulator: 558 líneas (Faker + Pandas)</text>
+    <text x="80" y="765" font-family="Arial, sans-serif" font-size="10" fill="#666">• Terraform IaC: 232 líneas (AWS Resources)</text>
+    
+    <text x="70" y="790" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">📦 Dependencias Principales:</text>
+    <text x="80" y="810" font-family="Arial, sans-serif" font-size="10" fill="#666">• Python 3.8+ | Streamlit 1.28+ | Plotly 5.17+</text>
+    <text x="80" y="825" font-family="Arial, sans-serif" font-size="10" fill="#666">• Pandas 2.0+ | NumPy 1.24+ | Boto3 1.29+</text>
+  </g>
+
+  <!-- KPIs y Datos -->
+  <g id="kpiData">
+    <rect x="500" y="650" width="430" height="200" rx="10" ry="10" fill="#ffffff" stroke="#e0e0e0" stroke-width="2" filter="url(#shadow)"/>
+    <text x="715" y="675" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1f77b4">
+      📊 DATOS Y KPIS DEL SISTEMA
+    </text>
+    
+    <text x="520" y="700" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">🏢 Datos Bancarios Generados:</text>
+    <text x="530" y="720" font-family="Arial, sans-serif" font-size="10" fill="#666">• 👥 15,000 Clientes únicos</text>
+    <text x="530" y="735" font-family="Arial, sans-serif" font-size="10" fill="#666">• 🎫 75,000 Tickets de soporte</text>
+    <text x="530" y="750" font-family="Arial, sans-serif" font-size="10" fill="#666">• 📋 21,531 Encuestas post-atención</text>
+    <text x="530" y="765" font-family="Arial, sans-serif" font-size="10" fill="#666">• 📞 30,000 Llamadas call center</text>
+    
+    <text x="520" y="790" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">📈 KPIs Calculados:</text>
+    <text x="530" y="810" font-family="Arial, sans-serif" font-size="10" fill="#666">• 📊 Satisfacción promedio: 3.22/5.0</text>
+    <text x="530" y="825" font-family="Arial, sans-serif" font-size="10" fill="#666">• 🎯 NPS Score: 5.0 | ✅ Tasa resolución: 82%</text>
+  </g>
+
+  <!-- Líneas de conexión -->
+  <path d="M550 250 L580 250" stroke="#999" stroke-width="2" stroke-dasharray="5,5"/>
+  <path d="M300 410 L490 440" stroke="#999" stroke-width="2" stroke-dasharray="5,5"/>
+  <path d="M755 410 L490 440" stroke="#999" stroke-width="2" stroke-dasharray="5,5"/>
+
+  <!-- Footer -->
+  <text x="600" y="885" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#666">
+    📅 Customer Satisfaction Analytics | Detalles Técnicos v1.0 | AWS Account: 155537880398 | 2025-09-04
+  </text>
+</svg>
