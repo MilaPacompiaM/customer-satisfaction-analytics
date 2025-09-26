@@ -1,0 +1,10 @@
+# Parquet Samples Directory
+
+This directory contains example Parquet files generated from the data pipeline for reference and testing.
+
+Files will include:
+- customer_tickets_sample.parquet
+- nps_surveys_sample.parquet
+- reviews_sample.parquet
+
+These samples help validate data formats and schemas before full pipeline deployment.
