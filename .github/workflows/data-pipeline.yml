@@ -1,9 +1,9 @@
 name: "Customer Satisfaction Analytics - Data Pipeline (Account: 155537880398)"
 
 on:
-  schedule:
-    # Ejecutar diariamente a las 6 AM UTC (FREE: 2000 min/mes)
-    - cron: '0 6 * * *'
+  # schedule:
+    # Ejecutar diariamente a las 6 AM UTC (FREE: 2000 min/mes) - COMENTADO para evitar ejecución automática
+    # - cron: '0 6 * * *'
   
   workflow_dispatch:
     # Permitir ejecución manual

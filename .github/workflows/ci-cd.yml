@@ -5,9 +5,9 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
-  schedule:
-    # Ejecutar tests diariamente a las 6 AM UTC
-    - cron: '0 6 * * *'
+  # schedule:
+    # Ejecutar tests diariamente a las 6 AM UTC (COMENTADO para evitar ejecución automática)
+    # - cron: '0 6 * * *'
 
 env:
   PYTHON_VERSION: '3.9'
